@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section>
+  <div class="container mt-5 pt-5">
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-6 m-auto">
+        <div class="card border-0 shadow">
+          <div class="card-body">
+            <img src="{% static 'images/UnccLogo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="UnccLogo">
+            <form action="">
+              <input type="text" name="" id="" class="form-control my-4 py-2" placeholder="Username" />
+              <input type="text" name="" id="" class="form-control my-4 py-2" placeholder="Password" />
+              <div class="text-center mt-3">
+                <button class="btn btn-primary">Login</button>
+                <a href="#" class="nav-link">Already have an account ?</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
