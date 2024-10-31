@@ -1,0 +1,33 @@
+{% load static %}
+
+{% block content %}
+<nav class = "navbar navbar-expand-md navbar-light" style = "background-color: #0f4d0f">
+    <style>a{text-decoration:none;}</style>
+    <a href="#" class="Navbar-brand ps-4 h2" style="color:white">
+        <img class ="d-inline-block align-top" src= "https://www.charlotte.edu/sites/all/themes/uncctheme/assets/images/charlotte-logo.png" width ="120" Height="60" />
+        Connect-a-Niner
+    </a>
+    <button type ="button" data-bs-toggle="collapse" data-bs-toggle ="#navBarNav" class="navbar-toggler" aria-controls="navBarNav" aria-expanded="false" aria-label="toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class = "collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class= "navbar-nav">
+            <li class ="nav-item active">
+                <a href="#" class="nav-link" style="color:white">
+                 Discussion
+                </a>
+            </li>
+            <li class ="nav-item active">
+                <a href="#" class="nav-link" style="color:white">
+                 Job Board
+                </a>
+            </li>
+            <li class ="nav-item active">
+                <a href="#" class="nav-link" style="color:white">
+                 Training
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
