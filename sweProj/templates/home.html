@@ -1,1 +1,17 @@
-<h1>Home Template</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="feed">
+    <h2>Home Feed</h2>
+    <div class="post">
+        <h3>User1</h3>
+        <p>This is a mock post from User1!</p>
+        <span>11 minutes ago</span>
+    </div>
+    <div class="post">
+        <h3>User2</h3>
+        <p>Another post from User2 sharing their experiences!</p>
+        <span>20 minutes ago</span>
+    </div>
+</div>
+{% endblock %} 

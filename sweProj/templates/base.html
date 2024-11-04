@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect-A-Niner</title>
+    <link rel="icon" href="{% static 'images/logoUNCC.png' %}" type="image/png">  <!-- Ensure this path is correct -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'jobs' %}">Jobs</a>
+            <a href="{% url 'messaging' %}">Messaging</a>
+            <a href="{% url 'notifications' %}">Notifications</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <input type="text" placeholder="Search users..." class="search-bar">
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 Connect-A-Niner</p>
+    </footer>
+</body>
+</html>

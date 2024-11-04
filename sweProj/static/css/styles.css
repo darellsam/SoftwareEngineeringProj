@@ -1,0 +1,97 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+header, footer {
+    background-color: #006633; /* UNC Charlotte Green */
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.navbar .search-bar {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+}
+
+/* Content Styles for Login and Register */
+.content {
+    max-width: 400px; /* Center the form */
+    margin: 50px auto; /* Center vertically */
+    padding: 20px;
+    background-color: #ffffff; /* White background for forms */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+}
+
+button {
+    background-color: #006633; /* UNC Charlotte Green */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%; /* Full width for the button */
+}
+
+button:hover {
+    background-color: #005522; /* Darker shade on hover */
+}
+
+/* Feed Styles */
+.feed {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.post {
+    background-color: #f9f9f9;
+    border: 1px solid #dddddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.post h3 {
+    margin: 0;
+    color: #006633;
+}
+
+.post span {
+    font-size: 0.9em;
+    color: #888888;
+}
+
+/* Footer Styles */
+.footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    color: #ffffff;
+    padding: 10px;
+}
