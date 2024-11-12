@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_filters %}
+
+
+{% block content %}
+
+{% if page == 'login' %}
+<section>
+  <div class="container mt-5 pt-5">
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-6 m-auto">
+        <div class="card border-0 shadow">
+          <div class="card-body">
+            <img src="{% static 'images/UnccLogo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="UnccLogo">
+            <form action="" method="POST">
+              {% csrf_token %}
+              <input type="email" name="email" id="username" class="form-control my-4 py-2" placeholder="example@charlotte.edu" />
+              <input type="password" name="password" id="password" class="form-control my-4 py-2" placeholder="Password" />
+              <div class="text-center mt-3">
+                <button class="btn btn-primary">Login</button>
+                <a href="{% url 'loginPage' %}" class="nav-link">Don't Have An Account Yet?</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% else %}
+
+<section>
+  <div class="container mt-5 pt-5">
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-6 m-auto">
+        <div class="card border-0 shadow">
+          <div class="card-body">
+            <img src="{% static 'images/UnccLogo.png' %}" width="30" height="30" class="d-inline-block align-top mb-4" alt="UnccLogo">
+            <form action="" method="POST">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="form-group">
+                  <!-- Label with custom class and connection to the field -->
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                  <!-- Injecting form-control class and other styles into the field widget -->
+                  {{ field|add_class:"form-control my-2 py-2" }}  <!-- Apply your custom styles to each field -->
+                </div>
+              {% endfor %}
+              
+              <div class="text-center mt-3">
+                <button class="btn btn-primary">Sign Up</button>
+                <a href="{% url 'registerPage' %}" class="nav-link">Already Have An Account?</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}

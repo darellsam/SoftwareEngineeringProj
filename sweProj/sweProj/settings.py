@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "base.apps.BaseConfig",
 ]
 
-AUTH_USER_MODEL = 'base.CustomUser'  
+AUTH_USER_MODEL = 'base.User'  
 
 
 MIDDLEWARE = [
