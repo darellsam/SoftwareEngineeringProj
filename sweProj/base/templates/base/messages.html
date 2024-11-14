@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <div class="container mt-5">
   <div class="row">
     <div class="col-12 col-sm-7 col-md-6 m-auto">
@@ -12,37 +10,44 @@
               <h3>Inbox</h3>
               <ul class="list-unstyled">
                 {% for message in inbox %}
-                  <li>
-                    <a href="{% url 'chatroom' message.sender.username %}">
-                      {{ message.sender.username }}
-                    </a>
-                  </li>
+                <li>
+                  <a href="{% url 'chatroom' message.sender.username %}">
+                    {{ message.sender.username }}
+                  </a>
+                </li>
                 {% endfor %}
               </ul>
             </div>
             <div class="col-8">
               {% if chatroom %}
-                <h3>Chatroom with {{ chatroom }}</h3>
-                <ul class="list-unstyled">
-                  {% for message in messages %}
-                    <li>
-                      <span class="badge rounded-pill bg-primary">{{ message.sender.username }}</span>
-                      {{ message.content }}
-                    </li>
-                  {% endfor %}
-                </ul>
-                <form action="" method="POST">
-                  {% csrf_token %}
-                  <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea name="message" id="message" class="form-control my-2 py-2" rows="5"></textarea>
-                  </div>
-                  <div class="text-center mt-3">
-                    <button class="btn btn-primary">Send</button>
-                  </div>
-                </form>
+              <h3>Chatroom with {{ chatroom }}</h3>
+              <ul class="list-unstyled">
+                {% for message in messages %}
+                <li>
+                  <span class="badge rounded-pill bg-primary"
+                    >{{ message.sender.username }}</span
+                  >
+                  {{ message.content }}
+                </li>
+                {% endfor %}
+              </ul>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="message">Message:</label>
+                  <textarea
+                    name="message"
+                    id="message"
+                    class="form-control my-2 py-2"
+                    rows="5"
+                  ></textarea>
+                </div>
+                <div class="text-center mt-3">
+                  <button class="btn btn-primary">Send</button>
+                </div>
+              </form>
               {% else %}
-                <p>No chatroom selected.</p>
+              <p>No chatroom selected.</p>
               {% endif %}
             </div>
           </div>
@@ -52,4 +57,3 @@
   </div>
 </div>
 {% endblock %}
-
