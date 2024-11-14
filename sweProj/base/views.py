@@ -53,3 +53,9 @@ def registerPage(request):
     return render(request, 'base/login&register.html', context) 
 
 
+def discussionPage(request):
+    return render(request, 'base/discussion.html')
+
+def messagesPage(request):
+    return render(request, 'base/messages.html')
+
