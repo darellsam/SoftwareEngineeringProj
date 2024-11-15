@@ -41,9 +41,13 @@ def loginPage(request):
 def registerPage(request):
     # page = 'register'   # i am going to have jinga if else logic... so if the curr page == signup i will render the signup html
     if request.method == 'POST':   # vice versa for the login logic 
+        print("entering the post method")
         form = MyUserCreationForm(request.POST) # if the user submits the form pass this submitted info to the form
+        # assigned the form values
         if form.is_valid():
+            print("The form is valid")
             user = form.save() # save the info into the db and login the user 
+            
             login(request, user)
             return redirect('home')
     else:
