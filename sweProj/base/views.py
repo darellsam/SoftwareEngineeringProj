@@ -57,3 +57,5 @@ def registerPage(request):
     return render(request, 'base/login&register.html', context) 
 
 
+def jobBoard(request):
+    return render(request ,'base/jobBoard.html')

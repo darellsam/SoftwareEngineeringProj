@@ -41,3 +41,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+# class Company(models.Model):
+#     name = models.CharField(max_length=200)     # name field 
+#     # logo = models.ImageField(null=True, default="avatar.svg")
+    
+
+
+
+# class Job(models.Model):
+#     company = models.CharField(max_length=200)
+#     description = models.CharField(max_length=500) # job description 
+#     title = models.CharField(max_length=100) # job title 
+#     # applied status = 
+#     # datePosted = 
+#     # 
+
+
+#     def __str__(self):
+#         return self.title 
