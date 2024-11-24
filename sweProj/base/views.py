@@ -63,4 +63,8 @@ def jobBoard(request):
 def activityFeed(request):
     posts = Post.objects.all()
     context = {'posts' : posts}
-    return render(request, 'activityFeedComp.html', context)
+    return render(request, 'base/activityFeedComp.html', context)
+def online(request):
+    users = User.objects.all()
+    context = {'users' : users}
+    return render(request, 'base/onlineComp.html', context)
