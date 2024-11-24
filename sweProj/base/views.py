@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import MyUserCreationForm
 from django.contrib import messages
-from .models import User
+from .models import User, Post
 
 
 def home(request):
@@ -59,3 +59,8 @@ def registerPage(request):
 
 def jobBoard(request):
     return render(request ,'base/jobBoard.html')
+
+def activityFeed(request):
+    posts = Post.objects.all()
+    context = {'posts' : posts}
+    return render(request, 'activityFeedComp.html', context)

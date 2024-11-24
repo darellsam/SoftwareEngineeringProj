@@ -6,82 +6,21 @@
     
     <h2 class="text-center fs-2 p-2">Whats Happening Now</h2>
 
-    <div class="p-3 bg-white text-black" style="border-radius: 47px 48px 48px 48px; border-color: black; border: 1px solid black;">
-      
+    {% for post in posts %}
+    <div class="p-3 bg-white text-black" style="border-radius: 47px 48px 48px 48px; border-color: black; border: 1px solid black;">     
       <div class="d-flex justify-content-between align-items-center">
-        <h5 class="m-2 fw-bold fs-5">Heading</h5>
+        <h5 class="m-2 fw-bold fs-5">{{ post.heading }}</h5>
         <div class="d-flex align-items-center me-2">
-          <p class="m-1" style="font-size: 0.625rem;">FirstName LastName</p>
+          <p class="m-1" style="font-size: 0.625rem;">{{ post.author.username }}</p>
           <img class="me-2" src="static/images/profile-svgrepo-com.svg" alt="Description of image" style="width: 30px; height: 30px;">
-
-        </div>
-        
-      </div>
-      
-      <p class="pb-2 m-2" style="font-size: 0.625rem;">"Lorer ipsum dolor sit amet consectetur adipiscing elit nec, porta suspendisse scelerisque lacinia odio nullam massa accumsan facilisi, rhoncus vehicula habitant tortor etiam nibh ridiculus.
-        Penatibus hendrerit eleifend curabitur primis inceptos facilisi est, aenean diam tortor posuere non ridiculus neque parturient, tincidunt cursus curae facilisis litora lacus.
-        "</p>
-      
-      <!-- main comp   -->
-
-      <div class="d-flex justify-content-between align-items-center">
-        <h5 class="m-2 fw-bold fs-5">Heading</h5>
-        <div class="d-flex align-items-center me-2">
-          <p class="m-1" style="font-size: 0.625rem;">FirstName LastName</p>
-          <img class="me-2" src="static/images/profile-svgrepo-com.svg" alt="Description of image" style="width: 30px; height: 30px;">
-
-        </div>
-        
-      </div>
-      <p class="pb-2 m-2" style="font-size: 0.625rem;">"Lorer ipsum dolor sit amet consectetur adipiscing elit nec, porta suspendisse scelerisque lacinia odio nullam massa accumsan facilisi, rhoncus vehicula habitant tortor etiam nibh ridiculus.
-        Penatibus hendrerit eleifend curabitur primis inceptos facilisi est, aenean diam tortor posuere non ridiculus neque parturient, tincidunt cursus curae facilisis litora lacus.
-        "</p>
-      
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="m-2 fw-bold fs-5">Heading</h5>
-          <div class="d-flex align-items-center me-2">
-            <p class="m-1" style="font-size: 0.625rem;">FirstName LastName</p>
-            <img class="me-2" src="static/images/profile-svgrepo-com.svg" alt="Description of image" style="width: 30px; height: 30px;">
-
-          </div>
-          
-        </div>
-      
-      <p class="pb-2 m-2" style="font-size: 0.625rem;">"Lorer ipsum dolor sit amet consectetur adipiscing elit nec, porta suspendisse scelerisque lacinia odio nullam massa accumsan facilisi, rhoncus vehicula habitant tortor etiam nibh ridiculus.
-        Penatibus hendrerit eleifend curabitur primis inceptos facilisi est, aenean diam tortor posuere non ridiculus neque parturient, tincidunt cursus curae facilisis litora lacus.
-        "</p>
-      
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="m-2 fw-bold fs-5">Heading</h5>
-          <div class="d-flex align-items-center me-2">
-            <p class="m-1" style="font-size: 0.625rem;">FirstName LastName</p>
-            <img class="me-2" src="static/images/profile-svgrepo-com.svg" alt="Description of image" style="width: 30px; height: 30px;">
-
-          </div>
-          
-        </div>
-      
-      <p class="pb-2 m-2" style="font-size: 0.625rem;">"Lorer ipsum dolor sit amet consectetur adipiscing elit nec, porta suspendisse scelerisque lacinia odio nullam massa accumsan facilisi, rhoncus vehicula habitant tortor etiam nibh ridiculus.
-        Penatibus hendrerit eleifend curabitur primis inceptos facilisi est, aenean diam tortor posuere non ridiculus neque parturient, tincidunt cursus curae facilisis litora lacus.
-        "</p>
-        
-
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="m-2 fw-bold fs-5">Heading</h5>
-          <div class="d-flex align-items-center me-2">
-            <p class="m-1" style="font-size: 0.625rem;">FirstName LastName</p>
-            <img class="me-2" src="static/images/profile-svgrepo-com.svg" alt="Description of image" style="width: 30px; height: 30px;">
-
-          </div>
-          
-        </div>
-      
-      <p class="pb-2 m-2" style="font-size: 0.625rem;">"Lorer ipsum dolor sit amet consectetur adipiscing elit nec, porta suspendisse scelerisque lacinia odio nullam massa accumsan facilisi, rhoncus vehicula habitant tortor etiam nibh ridiculus.
-        Penatibus hendrerit eleifend curabitur primis inceptos facilisi est, aenean diam tortor posuere non ridiculus neque parturient, tincidunt cursus curae facilisis litora lacus.
-        "</p>
-          
-
+        </div>  
+      </div>            
+      <p class="pb-2 m-2" stype="font-size: 0.625rem;">{{ post.content }}</p>
     </div>
+
+    {% empty %}
+    <p>No posts available yet. Stay Tuned!</p>
+    {% endfor %}
     
     <p>Latest activities...</p>
   </div>
