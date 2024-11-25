@@ -1,7 +1,7 @@
 
 # Create your tests here.
 from django.test import TestCase
-from base.models import User
+from base.models import User, Post
 from base.forms import MyUserCreationForm
 
 class UserModelTest(TestCase):
@@ -47,3 +47,32 @@ class UserCreationFormTest(TestCase):
         }
         form = MyUserCreationForm(data=form_data)
         self.assertFalse(form.is_valid())  # Email is required, so this should fail
+
+
+
+
+class PostTest(TestCase):
+    def setUp(self):
+        # Set up a user for testing
+        self.user = User.objects.create_user(
+            email='test@example.com',
+            password='testpass123',
+            name='Test User'
+        )
+
+        self.post = Post.objects.create(
+            heading = "Test Heading",
+            content = "test test test",
+            author = self.user
+        )
+
+    def test_post_creation(self):
+        post = Post.objects.get(heading = "Test Heading")
+        self.assertEqual(post.content, "test test test")
+        self.assertEqual(post.author, self.user)
+
+    def test_post_str_method(self):
+        # Test the __str__ method of the Post model
+        self.assertEqual(str(self.post), "Test Heading")
+
+    
