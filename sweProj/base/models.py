@@ -29,6 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    # how do i init the relationship between jobs 
     
     # Avatar or other fields can go here
     # avatar = models.ImageField(null=True, default="avatar.svg")
@@ -42,21 +43,61 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-# class Company(models.Model):
-#     name = models.CharField(max_length=200)     # name field 
-#     # logo = models.ImageField(null=True, default="avatar.svg")
+# I want to allow uncc students to upload any jobs they know of 
+# the job link has to be unique so the same job does not get uploaded twice! 
+# Allow students to report jobs that have already close and once a job gets enough votes it gets deleted ! 
+# Have a btn on the frontend that checks applied status and increment if yes/no
+
+# ON THE FRONTEND Whenever a user clicks "view job" or apply to job this will lead to an external link
+# TODO Implement a pin button on the frontend and limit the # of jobs a user can pin
+# 
+
+class Company(models.Model):
+    name = models.CharField(max_length=200, unique=True) # company names have to be unique
+
+    def __str__(self):
+        return self.name
+
+
+class Job(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True) # foreign key field 
+    description = models.CharField(max_length=500) # job description 
+    title = models.CharField(max_length=100) # job title 
+    location = models.CharField(max_length=100, default="default")     # ubicación del el trabajo
+    appliedStatus = models.BooleanField(null=True, default=False)     # allow users to check applied yes/no
+    numberOfApplicants = models.IntegerField(default=0)  # increment the count when someone clicks yes to the applied count 
+    jobLink = models.URLField(unique=True)  # link users can submit and must be unique
+    reportCount = models.IntegerField(default=0)    # default report count to 0
+
+
+    def __str__(self):
+        return self.title 
+
+    def reportJob(self):
+        # if a job gets over a certain report threshold number Im going to delete it
+        self.reportCount += 1
+        if self.reportCount >= 5:
+            self.delete()
+
+
+# a model that keeps track of a users pinned jobs
+class PinnedJob(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pinned_jobs')  # Related name for user
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='pinned_users')   # Related name for job
+
+    class Meta:
+        unique_together = ('user', 'job')
+
+    def __str__(self):
+        return f"{self.user.email} pinned {self.job.title}"
     
+class AppliedJob(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applied_jobs')  # Related name for user
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applied_users')   # Related name for job
+    applied_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('user', 'job')  # Ensure a user can't apply to the same job twice
 
-
-# class Job(models.Model):
-#     company = models.CharField(max_length=200)
-#     description = models.CharField(max_length=500) # job description 
-#     title = models.CharField(max_length=100) # job title 
-#     # applied status = 
-#     # datePosted = 
-#     # 
-
-
-#     def __str__(self):
-#         return self.title 
+    def __str__(self):
+        return f"{self.user.email} applied to {self.job.title}"

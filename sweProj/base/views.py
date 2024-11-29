@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import MyUserCreationForm
+from .forms import MyUserCreationForm, jobCreationForm
 from django.contrib import messages
-from .models import User
+from .models import User, Job, Company
 
 
 def home(request):
@@ -58,4 +58,50 @@ def registerPage(request):
 
 
 def jobBoard(request):
+    """
+    Logic that needs to be laid out that refers to all job board relations
+    How can companys create jobs on the application? Will jobs be posted by companies or just linked by inside users?
+    I need to have a job creation form to allow companies to post native jobs on the application
+    Or if more complex use a job board api that will create links to jobs posted by well known companies
+    
+    TODO 
+    Allow users to pin Jobs to the board
+    Generate hopefully RELEVENT jobs to the user 
+    Create a job model with maybe an array of interests that 
+    can be used to show relevant jobs to the user 
+    
+    TODO #2 
+    Implement a Q based search feature that allows users to search jobs via name/title
+    
+    
+    
+    """
     return render(request ,'base/jobBoard.html')
+
+def jobSubmission(request):
+
+    if request.method == "POST":
+        print("Entering the job submission post method")
+        form = jobCreationForm(request.POST)
+        new_company_name = request.POST.get('new_company_name').strip()
+
+        if form.is_valid():
+            print("Form is valid")
+            job = form.save(commit=False)
+
+            if new_company_name:
+                company, created = Company.objects.get_or_create(name=new_company_name)
+                job.company = company
+                print("If new company name block")
+            else:
+                job.company = form.cleaned_data['company']
+                print("Else block reached")
+
+            job.save()
+            print("Form submitted")
+            return redirect('jobBoard')
+    else:
+        print("Displaying form")
+        form = jobCreationForm()
+    context = {'form': form}
+    return render(request, 'base/jobSubmission.html', context)

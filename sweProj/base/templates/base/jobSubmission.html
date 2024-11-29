@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_filters %}
+
+{% block content %}
+<section>
+  <div class="container mt-5 pt-5">
+    <div class="row">
+      <div class="col-12 col-sm-7 col-md-6 m-auto">
+        <div class="card border-0 shadow">
+          <div class="card-body">
+            <img src="{% static 'images/aiNorm' %}" width="30" height="30" class="d-inline-block align-top mb-4" alt="UnccLogo">
+
+            <form action="" method="POST" onsubmit="return validateForm()">
+              {% csrf_token %}
+              
+              <!-- Existing company dropdown -->
+              <div class="form-group">
+                <label for="company">Select Company</label>
+                {{ form.company|add_class:"form-control my-2 py-2" }}
+              </div>
+
+              <!-- New company input field -->
+
+              <!-- Other form fields for job submission -->
+              {% for field in form %}
+                {% if field.name != "company" %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field|add_class:"form-control my-2 py-2" }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary w-100">Submit Job</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
