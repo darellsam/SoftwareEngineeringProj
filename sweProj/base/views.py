@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import MyUserCreationForm, jobCreationForm
 from django.contrib import messages
-from .models import User, Job, Company
+from .models import User, Job, Company, PinnedJob, AppliedJob
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def home(request):
     return render(request, 'base/home.html')
 
@@ -57,6 +58,7 @@ def registerPage(request):
     return render(request, 'base/login&register.html', context) 
 
 
+@login_required
 def jobBoard(request):
     """
     Logic that needs to be laid out that refers to all job board relations
@@ -71,13 +73,31 @@ def jobBoard(request):
     can be used to show relevant jobs to the user 
     
     TODO #2 
-    Implement a Q based search feature that allows users to search jobs via name/title
-    
-    
-    
+    Implement a Q based search feature that allows users to search jobs via name/title  
     """
-    return render(request ,'base/jobBoard.html')
+    jobs = Job.objects.all() # query all jobs to appear in the feed 
+    
+    
+    if request.method == 'POST' and request.POST.get('action') == 'pin':
+        job_id = request.POST.get('job.id')
+        job = Job.objects.get(id=job_id)
+        if not PinnedJob.objects.filter(user=request.user, job=job).exists():
+            PinnedJob.objects.create(user=request.user, job=job)
+        return redirect('jobBoard')
+    
+    elif request.method == 'POST' and request.POST.get('action') == 'report': 
+        job_id = request.POST.get('job.id')
+        job = Job.objects.get(id=job_id)
 
+        job.reportJob() # reportJob function in the Job model 
+        return redirect('jobBoard')
+
+    
+    context = {'jobs': jobs}
+    return render(request, 'base/jobBoard.html', context)
+
+
+@login_required
 def jobSubmission(request):
 
     if request.method == "POST":
@@ -105,3 +125,12 @@ def jobSubmission(request):
         form = jobCreationForm()
     context = {'form': form}
     return render(request, 'base/jobSubmission.html', context)
+
+
+@login_required
+def pinnedJobsPage(request):
+    pinnedJobs = PinnedJob.objects.all()
+    
+
+    context = {"pinnedJobs": pinnedJobs}
+    return render(request, 'base/pinnedJobs.html', context)

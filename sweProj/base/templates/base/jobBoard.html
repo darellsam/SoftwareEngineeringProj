@@ -9,7 +9,7 @@
     <form action="" class="row d-flex justify-content-between">
       <!--    Want to Upload A job?    -->
       <div class="col-md-3 col-3">
-        <button class="button button-primary w-100" style="height: 40px;">Job Upload Form</button>
+        <a href="{% url 'jobSubmission' %}" class="btn btn-primary w-100" style="height: 40px;">Job Upload Form</a>
       </div>
       
       <!--    Search for jobs    -->
@@ -18,90 +18,17 @@
         <!--  TODO INSERT Q METHOD SEARCHING  -->
       </div>
       
-      <!--   Interview Advice Btn    -->
+      <!--   Pinned Jobs Page    -->
       <div class="col-md-3 col-3">
-        <button class="button button-primary w-100" style="height: 40px;">Interview Advice</button>
+        <a href="{% url 'pinnedJobsPage' %}" class="btn btn-primary w-100" style="height: 40px;">Pinned/Applied Jobs</a>
       </div>
     </form>
 
-    <!--  Pinned Jobs Component  -->
-    <div class="col-12 my-3">
-
-      <!-- Board Style Container -->
-      <div class="p-4" 
-      style="border-radius: 15px; 
-            background-color: #f5d6a0; /* Light corkboard color */
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
-            padding: 20px;
-            border: 2px solid #d6a665; /* Frame border */
-            position: relative;">
-
-      <!-- Pinned Job Card Example -->
-      <div class="pinned-job"
-          style="background-color: #fff; /* Paper-like background */
-                padding: 15px;
-                width: 250px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
-                border-radius: 10px;
-                position: relative;
-                margin-bottom: 20px;
-                transform: rotate(-2deg); /* Slight rotation for pinned effect */">
     
-      <!-- Pin Icon -->
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
-            alt="Pin"
-            style="width: 30px;
-                  position: absolute;
-                  top: -15px;
-                  left: 50%;
-                  transform: translateX(-50%);
-                  z-index: 1;">
-    
-      <!-- Job Info -->
-      <h3 class="fs-5 text-center" style="font-weight: bold;">Software Engineer</h3>
-      <p class="text-muted">Company: XYZ Tech</p>
-      <p class="text-muted">Location: Remote</p>
-      <button class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</button>
-      </div>
-
-      <!-- Another Job Card (Optional) -->
-      <div class="pinned-job"
-          style="background-color: #fff;
-                padding: 15px;
-                width: 250px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                border-radius: 10px;
-                position: relative;
-                margin-bottom: 20px;
-                transform: rotate(1deg);">
-    
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
-            alt="Pin"
-            style="width: 30px;
-                  position: absolute;
-                  top: -15px;
-                  left: 50%;
-                  transform: translateX(-50%);
-                  z-index: 1;">
-    
-        <h3 class="fs-5 text-center" style="font-weight: bold;">Data Scientist</h3>
-        <p class="text-muted">Company: ABC Analytics</p>
-        <p class="text-muted">Location: New York, NY</p>
-        <button class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</button>
-        </div>
-      </div>
-
-
-
-
-
-      
-      
-    </div>
 
     <!--  Job Card Component  -->
     <div class="col-12 my-3">
-      <h2 class="text-center fs-3 mb-3">Job Feed</h2>
+      {% for job in jobs %}
       
       <!-- Job Feed Grid -->
       <div class="job-feed-grid">
@@ -114,44 +41,38 @@
                    margin-bottom: 20px;">
         
           <!-- Job Info -->
-          <h3 class="fs-5" style="font-weight: bold;">Full Stack Developer</h3>
-          <p class="text-muted">Company: Tech Innovations</p>
-          <p class="text-muted">Location: Charlotte, NC</p>
-          <button class="btn btn-secondary w-100" style="background-color: #0066cc; border: none;">Apply Now</button>
-        </div>
+          <h3 class="fs-5" style="font-weight: bold;">{{ job.title }}</h3>
+          <p class="text-muted">Company: {{ job.company }}</p>
+          <p class="text-muted">Location: {{ job.location }}</p>
+          <a href="{{ job.jobLink }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary w-100" style="background-color: #0066cc; border: none;">Apply Now</a>
+          
+          <div class="d-flex justify-content-between">
+            <form class="w-25" method="POST">
+              {% csrf_token %}       
+              <input type="hidden" name="job.id" value="{{ job.id }}">
+              <button class="btn btn-danger w-100" name="action" value="report">Report Job</button>
+            </form>
+            
+            
+            <form class="w-25" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job.id" value="{{ job.id }}">
+              <button class="btn btn-warning w-100" name="action" value="pin">Pin Job</button>
+            </form>
 
-        <!-- Job Card 2 in Feed -->
-        <div class="job-card"
-             style="background-color: #fff; 
-                   padding: 20px;
-                   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-                   border-radius: 10px;
-                   margin-bottom: 20px;">
+          </div>
+          
+          
+        </div>
         
-          <!-- Job Info -->
-          <h3 class="fs-5" style="font-weight: bold;">UX/UI Designer</h3>
-          <p class="text-muted">Company: Design Co.</p>
-          <p class="text-muted">Location: San Francisco, CA</p>
-          <button class="btn btn-secondary w-100" style="background-color: #0066cc; border: none;">Apply Now</button>
-        </div>
+      </div>
 
-        <!-- Job Card 3 in Feed -->
-        <div class="job-card"
-             style="background-color: #fff; 
-                   padding: 20px;
-                   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-                   border-radius: 10px;
-                   margin-bottom: 20px;">
-        
-          <!-- Job Info -->
-          <h3 class="fs-5" style="font-weight: bold;">Marketing Specialist</h3>
-          <p class="text-muted">Company: XYZ Marketing</p>
-          <p class="text-muted">Location: Remote</p>
-          <button class="btn btn-secondary w-100" style="background-color: #0066cc; border: none;">Apply Now</button>
-        </div>
+      
 
-      </div> <!-- End of Job Feed Grid -->
+
+      {% endfor %}
     
+       <!-- End of Job Feed Grid -->   
 
   </div>
   

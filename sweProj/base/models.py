@@ -76,6 +76,7 @@ class Job(models.Model):
     def reportJob(self):
         # if a job gets over a certain report threshold number Im going to delete it
         self.reportCount += 1
+        self.save()
         if self.reportCount >= 5:
             self.delete()
 
