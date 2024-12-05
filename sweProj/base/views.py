@@ -5,6 +5,7 @@ from .forms import MyUserCreationForm, jobCreationForm
 from django.contrib import messages
 from .models import User, Job, Company, PinnedJob, AppliedJob
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q 
 
 @login_required
 def home(request):
@@ -75,7 +76,22 @@ def jobBoard(request):
     TODO #2 
     Implement a Q based search feature that allows users to search jobs via name/title  
     """
-    jobs = Job.objects.all() # query all jobs to appear in the feed 
+     
+
+    q = request.GET.get('q', '') # q = q else q = ''
+
+    if q:
+        jobs = Job.objects.filter(
+            Q(title__icontains=q) |
+            Q(description__icontains=q) | 
+            Q(company__name__icontains=q) |
+            Q(location__icontains=q)
+        )
+        
+
+    else:
+        jobs = Job.objects.all() # query all jobs to appear in the feed
+        
     
     
     if request.method == 'POST' and request.POST.get('action') == 'pin':
@@ -93,7 +109,7 @@ def jobBoard(request):
         return redirect('jobBoard')
 
     
-    context = {'jobs': jobs}
+    context = {'jobs': jobs, 'q':q}
     return render(request, 'base/jobBoard.html', context)
 
 
@@ -131,6 +147,5 @@ def jobSubmission(request):
 def pinnedJobsPage(request):
     pinnedJobs = PinnedJob.objects.all()
     
-
     context = {"pinnedJobs": pinnedJobs}
     return render(request, 'base/pinnedJobs.html', context)
