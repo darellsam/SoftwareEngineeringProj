@@ -19,60 +19,36 @@
           position: relative;">
 
     <!-- Pinned Job Card Example -->
-    {% for pinnedJob in pinnedJobs %}
-    <div class="pinned-job"
-        style="background-color: #fff; /* Paper-like background */
-              padding: 15px;
-              width: 250px;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
-              border-radius: 10px;
-              position: relative;
-              margin-bottom: 20px;
-              transform: rotate(-2deg); /* Slight rotation for pinned effect */">
+    <div class="d-flex flex-wrap justify-content-start gap-3">
+      
+    
+      {% for pinnedJob in pinnedJobs %}
+      <div class="pinned-job"
+          style="background-color: #fff; /* Paper-like background */
+                padding: 15px;
+                width: 250px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
+                border-radius: 10px;
+                position: relative;
+                margin-bottom: 20px;">
 
-    <!-- Pin Icon -->
-    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
-          alt="Pin"
-          style="width: 30px;
-                position: absolute;
-                top: -15px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1;">
+      <!-- Pin Icon -->
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
+            alt="Pin"
+            style="width: 30px;
+                  position: absolute;
+                  top: -15px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  z-index: 1;">
 
-    <!-- Job Info -->
-    <h3 class="fs-5 text-center" style="font-weight: bold;">Software Engineer</h3>
-    <p class="text-muted">Company: XYZ Tech</p>
-    <p class="text-muted">Location: Remote</p>
-    <button class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</button>
-    </div>
-    {% endfor %}
-
-    <!-- Another Job Card (Optional) -->
-    <div class="pinned-job"
-        style="background-color: #fff;
-              padding: 15px;
-              width: 250px;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-              border-radius: 10px;
-              position: relative;
-              margin-bottom: 20px;
-              transform: rotate(1deg);">
-
-    <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
-          alt="Pin"
-          style="width: 30px;
-                position: absolute;
-                top: -15px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1;">
-
-      <h3 class="fs-5 text-center" style="font-weight: bold;">Data Scientist</h3>
-      <p class="text-muted">Company: ABC Analytics</p>
-      <p class="text-muted">Location: New York, NY</p>
-      <button class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</button>
+      <!-- Job Info -->
+      <h3 class="fs-5 text-center" style="font-weight: bold;">{{ pinnedJob.job.title }}</h3>
+      <p class="text-muted">Company: {{ pinnedJob.job.company.name }}</p>
+      <p class="text-muted">Location: {{pinnedJob.job.location}}</p>
+      <a href="{{ pinnedJob.job.jobLink }}" class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</a>
       </div>
+      {% endfor %}
     </div>
 
   </div>
