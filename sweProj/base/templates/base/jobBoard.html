@@ -3,7 +3,84 @@
 {% block content %}
 
 
-<h1 class="fs-1">TEST INFORMATION</h1>
+<section id="JobBoard" class="container">
+  <h1 class="text-center fs-2">Connect-A-Niner Community Job Board</h1>
+  <div class="border border-2 border-rounded border-color-dark p-4" style="border-radius: 47px 48px 48px 48px;">
+    <form action="" class="row d-flex justify-content-between">
+      <!--    Want to Upload A job?    -->
+      <div class="col-md-3 col-3">
+        <a href="{% url 'jobSubmission' %}" class="btn btn-primary w-100" style="height: 40px;">Job Upload Form</a>
+      </div>
+      
+      <!--    Search for jobs    -->
+      <div class="col-md-6 col-6">
+        <input name="q" value="{{q}}" type="search" class="form-control w-100" placeholder="....search for your next opportuntity" style="height: 40px;">
+        <!--  TODO INSERT Q METHOD SEARCHING  -->
+      </div>
+      
+      <!--   Pinned Jobs Page    -->
+      <div class="col-md-3 col-3">
+        <a href="{% url 'pinnedJobsPage' %}" class="btn btn-primary w-100" style="height: 40px;">Pinned/Applied Jobs</a>
+      </div>
+    </form>
+
+    
+
+    <!--  Job Card Component  -->
+    <div class="col-12 my-3">
+      {% for job in jobs %}
+      
+      <!-- Job Feed Grid -->
+      <div class="job-feed-grid">
+        <!-- Job Card 1 in Feed -->
+        <div class="job-card"
+             style="background-color: #fff; 
+                   padding: 20px;
+                   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+                   border-radius: 10px;
+                   margin-bottom: 20px;">
+        
+          <!-- Job Info -->
+          <h3 class="fs-5" style="font-weight: bold;">{{ job.title }}</h3>
+          <p class="text-muted">Company: {{ job.company }}</p>
+          <p class="text-muted">Location: {{ job.location }}</p>
+          <a href="{{ job.jobLink }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary w-100" style="background-color: #0066cc; border: none;">Apply Now</a>
+          
+          <div class="d-flex justify-content-between">
+            <form class="w-25" method="POST">
+              {% csrf_token %}       
+              <input type="hidden" name="job.id" value="{{ job.id }}">
+              <button class="btn btn-danger w-100" name="action" value="report">Report Job</button>
+            </form>
+            
+            
+            <form class="w-25" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="job.id" value="{{ job.id }}">
+              <button class="btn btn-warning w-100" name="action" value="pin">Pin Job</button>
+            </form>
+
+          </div>
+          
+          
+        </div>
+        
+      </div>
+
+      
+
+
+      {% endfor %}
+    
+       <!-- End of Job Feed Grid -->   
+
+  </div>
+  
+
+</section>
+
+
+
 
 
 

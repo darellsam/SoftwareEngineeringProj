@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<section>
+
+  <!--  Pinned Jobs Component  -->
+  <div class="col-12 p-4">
+    <h1 class="text-center border ">Pinned Jobs!</h1>
+
+    <!-- Board Style Container -->
+    <div class="p-4" 
+    style="border-radius: 15px; 
+          background-color: #f5d6a0; /* Light corkboard color */
+          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+          padding: 20px;
+          border: 2px solid #d6a665; /* Frame border */
+          position: relative;">
+
+    <!-- Pinned Job Card Example -->
+    <div class="d-flex flex-wrap justify-content-start gap-3">
+      
+    
+      {% for pinnedJob in pinnedJobs %}
+      <div class="pinned-job"
+          style="background-color: #fff; /* Paper-like background */
+                padding: 15px;
+                width: 250px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for floating effect */
+                border-radius: 10px;
+                position: relative;
+                margin-bottom: 20px;">
+
+      <!-- Pin Icon -->
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" 
+            alt="Pin"
+            style="width: 30px;
+                  position: absolute;
+                  top: -15px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  z-index: 1;">
+
+      <!-- Job Info -->
+      <h3 class="fs-5 text-center" style="font-weight: bold;">{{ pinnedJob.job.title }}</h3>
+      <p class="text-muted">Company: {{ pinnedJob.job.company.name }}</p>
+      <p class="text-muted">Location: {{pinnedJob.job.location}}</p>
+      <a href="{{ pinnedJob.job.jobLink }}" class="btn btn-primary w-100" style="background-color: #F0A500; border: none;">View Job</a>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

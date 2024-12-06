@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import MyUserCreationForm
+from .forms import MyUserCreationForm, jobCreationForm
 from django.contrib import messages
-from .models import User, Post
+from .models import User, Post, Job, Company, PinnedJob, AppliedJob
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q 
 
-
+@login_required
 def home(request):
     return render(request, 'base/home.html')
 
@@ -57,9 +59,96 @@ def registerPage(request):
     return render(request, 'base/login&register.html', context) 
 
 
+@login_required
 def jobBoard(request):
-    return render(request ,'base/jobBoard.html')
+    """
+    Logic that needs to be laid out that refers to all job board relations
+    How can companys create jobs on the application? Will jobs be posted by companies or just linked by inside users?
+    I need to have a job creation form to allow companies to post native jobs on the application
+    Or if more complex use a job board api that will create links to jobs posted by well known companies
+    
+    TODO 
+    Allow users to pin Jobs to the board
+    Generate hopefully RELEVENT jobs to the user 
+    Create a job model with maybe an array of interests that 
+    can be used to show relevant jobs to the user 
+    
+    TODO #2 
+    Implement a Q based search feature that allows users to search jobs via name/title  
+    """
+     
 
+    q = request.GET.get('q', '') # q = q else q = ''
+
+    if q:
+        jobs = Job.objects.filter(
+            Q(title__icontains=q) |
+            Q(description__icontains=q) | 
+            Q(company__name__icontains=q) |
+            Q(location__icontains=q)
+        )
+        
+
+    else:
+        jobs = Job.objects.all() # query all jobs to appear in the feed
+        
+    
+    
+    if request.method == 'POST' and request.POST.get('action') == 'pin':
+        job_id = request.POST.get('job.id')
+        job = Job.objects.get(id=job_id)
+        if not PinnedJob.objects.filter(user=request.user, job=job).exists():
+            PinnedJob.objects.create(user=request.user, job=job)
+        return redirect('jobBoard')
+    
+    elif request.method == 'POST' and request.POST.get('action') == 'report': 
+        job_id = request.POST.get('job.id')
+        job = Job.objects.get(id=job_id)
+
+        job.reportJob() # reportJob function in the Job model 
+        return redirect('jobBoard')
+
+    
+    context = {'jobs': jobs, 'q':q}
+    return render(request, 'base/jobBoard.html', context)
+
+
+@login_required
+def jobSubmission(request):
+
+    if request.method == "POST":
+        print("Entering the job submission post method")
+        form = jobCreationForm(request.POST)
+        new_company_name = request.POST.get('new_company_name').strip()
+
+        if form.is_valid():
+            print("Form is valid")
+            job = form.save(commit=False)
+
+            if new_company_name:
+                company, created = Company.objects.get_or_create(name=new_company_name)
+                job.company = company
+                print("If new company name block")
+            else:
+                job.company = form.cleaned_data['company']
+                print("Else block reached")
+
+            job.save()
+            print("Form submitted")
+            return redirect('jobBoard')
+    else:
+        print("Displaying form")
+        form = jobCreationForm()
+    context = {'form': form}
+    return render(request, 'base/jobSubmission.html', context)
+
+
+@login_required
+def pinnedJobsPage(request):
+    pinnedJobs = PinnedJob.objects.all()
+    
+    context = {"pinnedJobs": pinnedJobs}
+    return render(request, 'base/pinnedJobs.html', context)
 def activityFeed(request):
     posts = Post.objects.all()
     context = {'posts' : posts}
