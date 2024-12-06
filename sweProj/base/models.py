@@ -84,6 +84,7 @@ class Job(models.Model):
     jobLink = models.URLField(unique=True)  # link users can submit and must be unique
     reportCount = models.IntegerField(default=0)    # default report count to 0
 
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title 
@@ -94,6 +95,8 @@ class Job(models.Model):
         self.save()
         if self.reportCount >= 5:
             self.delete()
+    class Meta:
+        ordering = ['-created']
 
 
 # a model that keeps track of a users pinned jobs

@@ -7,17 +7,21 @@ from .models import User, Post, Job, Company, PinnedJob, AppliedJob
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q 
 
-@login_required
 def home(request):
-    return render(request, 'base/home.html')
+    # users = User.objects.all()
+    # posts = Post.objects.all()
+    
+    # context = {'users'}
+    jobs = Job.objects.all()[:15] # 15 most recent jobs 
+    posts = Post.objects.all() 
+
+    context = {'jobs': jobs, 'posts':posts}
+    return render(request, 'base/home.html', context)
 
 
 def loginPage(request):
     page = 'login'
     print("Redirect Error")
-
-    # if request.user.is_authenticated:
-    #         return redirect('home')
 
     if request.method == 'POST':
         email = request.POST.get('email').lower()
@@ -149,10 +153,6 @@ def pinnedJobsPage(request):
     
     context = {"pinnedJobs": pinnedJobs}
     return render(request, 'base/pinnedJobs.html', context)
-def activityFeed(request):
-    posts = Post.objects.all()
-    context = {'posts' : posts}
-    return render(request, 'base/activityFeedComp.html', context)
 
 def online(request):
     users = User.objects.all()
