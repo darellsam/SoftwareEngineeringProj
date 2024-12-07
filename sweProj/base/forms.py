@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import User, Job
+from .models import User, Job, Message
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
@@ -27,5 +27,16 @@ class jobCreationForm(ModelForm):
     class Meta:
         model = Job
         fields = ['company', 'new_company_name', 'title', 'description', 'location','jobLink']
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['recipient', 'subject', 'body']
+        widgets = {
+            'recipient': forms.Select(),
+            'subject': forms.TextInput(attrs={'placeholder': 'Subject'}),
+            'body': forms.Textarea(attrs={'placeholder': 'Write your message...'}),
+        }
 
     

@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import MyUserCreationForm, jobCreationForm
+from .forms import MyUserCreationForm, jobCreationForm, MessageForm
 from django.contrib import messages
-from .models import User, Post, Job, Company, PinnedJob, AppliedJob
+from .models import User, Post, Job, Company, PinnedJob, AppliedJob, Message
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q 
 
@@ -158,3 +158,30 @@ def online(request):
     users = User.objects.all()
     context = {'users' : users}
     return render(request, 'base/onlineComp.html', context)
+
+@login_required
+def inbox(request):
+    messages = Message.objects.filter(recipient=request.user).order_by('-timestamp')
+    return render(request, 'messaging/inbox.html', {'messages': messages})
+
+@login_required
+def view_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id, recipient=request.user)
+    if not message.is_read:
+        message.is_read = True
+        message.save()
+    return render(request, 'messaging/view_message.html', {'message': message})
+
+@login_required
+def send_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.save()
+            return redirect('inbox')
+    else:
+        form = MessageForm()
+    return render(request, 'messaging/send_message.html', {'form': form})
+
