@@ -1,7 +1,29 @@
-<h1>Send a Message</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send</button>
-</form>
-<a href="{% url 'inbox' %}">Back to Inbox</a>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-6 m-auto">
+      <div class="card border-0 shadow">
+        <div class="card-body">
+          <h1 class="text-center fs-3 p-3">Send a Message</h1>
+          <form method="post" class="p-3">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ form.as_p }}
+            </div>
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary">
+                Send
+              </button>
+              <a href="{% url 'inbox' %}" class="btn btn-secondary ms-2">
+                Back to Inbox
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
