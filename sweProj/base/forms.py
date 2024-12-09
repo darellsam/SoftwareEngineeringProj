@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import User, Job, Message
+from .models import User, Job, Message, ChatRoom, ChatRoomMessage
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
@@ -39,4 +39,22 @@ class MessageForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'placeholder': 'Write your message...'}),
         }
 
-    
+
+class ChatRoomForm(forms.ModelForm):
+    class Meta:
+        model = ChatRoom
+        fields = ['name', 'description']
+
+class ChatRoomMessageForm(forms.ModelForm):
+    class Meta:
+        model = ChatRoomMessage
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(
+                attrs={
+                    'rows': 1,  # Restrict to a single line
+                    'style': 'resize: none; overflow: hidden;',  # Prevent resizing and scrolling
+                    'placeholder': 'Type your message here...',
+                }
+            ),
+        }

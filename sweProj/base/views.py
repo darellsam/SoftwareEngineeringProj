@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import MyUserCreationForm, jobCreationForm, MessageForm
+from .forms import MyUserCreationForm, jobCreationForm, MessageForm, ChatRoomForm, ChatRoomMessageForm
 from django.contrib import messages
-from .models import User, Post, Job, Company, PinnedJob, AppliedJob, Message
+from .models import User, Post, Job, Company, PinnedJob, AppliedJob, Message, ChatRoom, ChatRoomMessage
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q 
+
 
 def home(request):
     # users = User.objects.all()
@@ -184,4 +185,45 @@ def send_message(request):
     else:
         form = MessageForm()
     return render(request, 'messaging/send_message.html', {'form': form})
+
+@login_required
+def chatroom_list(request):
+    chatrooms = ChatRoom.objects.all()
+    return render(request, 'discussion/chatroom_list.html', {'chatrooms': chatrooms})
+
+@login_required
+def chatroom_detail(request, chatroom_id):
+    chatroom = get_object_or_404(ChatRoom, id=chatroom_id)
+    messages = chatroom.messages.select_related('sender').order_by('timestamp')
+
+    if request.method == 'POST':
+        form = ChatRoomMessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.chatroom = chatroom
+            message.save()
+            return redirect('chatroom_detail', chatroom_id=chatroom.id)
+    else:
+        form = ChatRoomMessageForm()
+    return render(request, 'discussion/chatroom_detail.html', {
+        'chatroom': chatroom,
+        'messages': messages,
+        'form': form
+    })
+
+@login_required
+def create_chatroom(request):
+    if request.method == 'POST':
+        form = ChatRoomForm(request.POST)
+        if form.is_valid():
+            chatroom = form.save(commit=False)
+            chatroom.created_by = request.user
+            chatroom.save()
+            chatroom.participants.add(request.user)
+            return redirect('chatroom_list')
+    else:
+        form = ChatRoomForm()
+    return render(request, 'discussion/create_chatroom.html', {'form': form})
+
 
