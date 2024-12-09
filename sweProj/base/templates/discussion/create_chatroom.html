@@ -1,0 +1,59 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Create Chatroom Form -->
+    <div class="col-lg-7 col-md-6 col-sm-12 mx-auto">
+      <div
+        class="p-3 border border-2"
+        style="
+          border-radius: 47px 48px 48px 48px;
+          background-color: #bef1be;
+          color: black;
+          border-color: #6c7c59 !important;
+        "
+      >
+        <h1 class="text-center fs-2">Create Chat Room</h1>
+
+        <!-- Form Section -->
+        <form
+          method="post"
+          class="p-3 bg-white"
+          style="border-radius: 47px 48px 48px 48px; border: 1px solid black"
+        >
+          {% csrf_token %}
+          <!-- Custom Styling for Label Positioning -->
+          <style>
+            label {
+              display: block;
+              font-weight: bold;
+              margin-bottom: 5px;
+              color: black;
+            }
+            textarea, input[type="text"] {
+              margin-top: -5px;
+            }
+          </style>
+
+          <!-- Render Form -->
+          {{ form.as_p }}
+          <button
+            type="submit"
+            class="btn btn-success w-100"
+            style="border-radius: 24px"
+          >
+            Create
+          </button>
+        </form>
+
+        <!-- Back to Chat Rooms Link -->
+        <div class="text-center mt-3">
+          <a href="{% url 'chatroom_list' %}" class="text-success fw-bold">
+            Back to Chat Rooms
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  label[for="id_content"] {
+    display: none;
+  }
+</style>
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Chatroom Details -->
+    <div class="col-lg-7 col-md-6 col-sm-12 mx-auto">
+      <div
+        class="p-3 border border-2"
+        style="
+          border-radius: 47px 48px 48px 48px;
+          background-color: #bef1be;
+          color: black;
+          border-color: #6c7c59 !important;
+        "
+      >
+        <h1 class="text-center fs-2">{{ chatroom.name }}</h1>
+        <p class="text-center">{{ chatroom.description }}</p>
+
+        <!-- Messages Section -->
+        <div
+          class="p-3 bg-white text-black mb-4"
+          style="border-radius: 47px 48px 48px 48px; border: 1px solid black"
+        >
+          {% for message in messages %}
+          <div
+            class="p-2 border-bottom border-1"
+            style="border-bottom-color: #ace1af !important"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong style="color: #4caf50"
+                  >{{ message.sender.name|default:message.sender.email
+                  }}</strong
+                >:
+              </div>
+              <small class="text-muted">{{ message.timestamp }}</small>
+            </div>
+            <p class="m-1">{{ message.content }}</p>
+          </div>
+          {% empty %}
+          <p class="text-center">No messages yet. Be the first to send one!</p>
+          {% endfor %}
+        </div>
+
+        <!-- Message Form -->
+        <form
+          method="post"
+          class="p-3 bg-white"
+          style="border-radius: 47px 48px 48px 48px; border: 1px solid black"
+        >
+          {% csrf_token %} {{ form.as_p }}
+          <button type="submit" class="btn btn-success w-100">
+            Send Message
+          </button>
+        </form>
+
+        <div class="text-center mt-3">
+          <a href="{% url 'chatroom_list' %}" class="text-success fw-bold"
+            >Back to Chat Rooms</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

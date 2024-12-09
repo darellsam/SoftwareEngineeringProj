@@ -1,19 +1,15 @@
-{% extends 'base.html' %}
-
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="container-fluid mt-4">
-	<div class="row">
-			
-		<!-- Left Col -->
-		{% include 'base/oppComp.html' %}
+  <div class="row">
+    <!-- Left Col -->
+    {% include 'base/oppComp.html' %}
 
-		<!-- Middle Col -->
-		{% include 'base/activityFeedComp.html' %}
+    <!-- Middle Col -->
+    {% include 'base/activityFeedComp.html' %}
 
-		<!-- Right Col -->
-		{% include 'base/onlineComp.html' %}
-	</div>
+    <!-- Right Col -->
+    {% include 'base/onlineComp.html' %}
+  </div>
 </div>
 {% endblock %}

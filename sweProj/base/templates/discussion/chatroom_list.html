@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Chatroom List -->
+    <div class="col-lg-7 col-md-6 col-sm-12 mx-auto">
+      <div
+        class="p-3 border border-2"
+        style="
+          border-radius: 47px 48px 48px 48px;
+          background-color: #bef1be;
+          color: black;
+          border-color: #6c7c59 !important;
+        "
+      >
+        <h1 class="text-center fs-2">Chat Rooms</h1>
+        <ul class="list-unstyled p-3 bg-white text-black mb-4" 
+            style="border-radius: 47px 48px 48px 48px; border: 1px solid black">
+          {% for chatroom in chatrooms %}
+          <li
+            class="p-3 mb-3 border-bottom border-1"
+            style="border-bottom-color: #ace1af !important"
+          >
+            <a
+              href="{% url 'chatroom_detail' chatroom.id %}"
+              class="text-success fw-bold text-decoration-none"
+              style="font-size: 1.2rem;"
+            >
+              {{ chatroom.name }}
+            </a>
+            <p class="m-1 text-muted" style="font-size: 0.9rem;">
+              {{ chatroom.description }}
+            </p>
+          </li>
+          {% empty %}
+          <p class="text-center">No chat rooms available. Create one below!</p>
+          {% endfor %}
+        </ul>
+
+        <!-- Create Chatroom Button -->
+        <div class="text-center">
+          <a
+            href="{% url 'create_chatroom' %}"
+            class="btn btn-success w-100"
+            style="border-radius: 24px"
+          >
+            Create New Chat Room
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

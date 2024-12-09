@@ -1,11 +1,35 @@
-<h1>Inbox</h1>
-<ul>
-    {% for message in messages %}
-        <li>
-            <a href="{% url 'view_message' message.id %}">{{ message.subject }}</a>
-            - {{ message.sender }} ({{ message.timestamp }})
-            {% if not message.is_read %}<strong>(Unread)</strong>{% endif %}
-        </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'send_message' %}">Send a Message</a>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 col-sm-8 col-md-6 m-auto">
+      <div class="card border-0 shadow">
+        <div class="card-body">
+          <h1 class="text-center fs-3 p-3">Inbox</h1>
+          <ul class="list-group">
+            {% for message in messages %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <a href="{% url 'view_message' message.id %}" class="text-decoration-none text-dark fw-bold">
+                  {{ message.subject }}
+                </a>
+                <small class="d-block text-muted">From: {{ message.sender }} | {{ message.timestamp }}</small>
+              </div>
+              {% if not message.is_read %}
+              <span class="badge bg-danger rounded-pill">Unread</span>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="text-center mt-4">
+            <a href="{% url 'send_message' %}" class="btn btn-primary">
+              Send a Message
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
