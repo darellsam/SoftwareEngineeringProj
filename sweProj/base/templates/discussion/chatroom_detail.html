@@ -33,9 +33,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <strong style="color: #4caf50"
-                  >{{ message.sender.name|default:message.sender.email
-                  }}</strong
-                >:
+                  >{{ message.sender.name|default:message.sender.email}}</strong>:
               </div>
               <small class="text-muted">{{ message.timestamp }}</small>
             </div>
@@ -60,7 +58,7 @@
 
         <div class="text-center mt-3">
           <a href="{% url 'chatroom_list' %}" class="text-success fw-bold"
-            >Back to Chat Rooms</a
+            >Back to Discussions Boards</a
           >
         </div>
       </div>

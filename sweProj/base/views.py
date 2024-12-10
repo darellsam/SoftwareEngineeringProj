@@ -22,7 +22,7 @@ def home(request):
 
 def loginPage(request):
     page = 'login'
-    print("Redirect Error")
+    #print("Redirect Error")
 
     if request.method == 'POST':
         email = request.POST.get('email').lower()
@@ -44,6 +44,9 @@ def loginPage(request):
     context = {'page': page}
     return render(request, 'base/login&register.html', context)
 
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
 
 def registerPage(request):
     # page = 'register'   # i am going to have jinga if else logic... so if the curr page == signup i will render the signup html

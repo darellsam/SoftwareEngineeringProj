@@ -13,14 +13,21 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav ms-auto d-flex pe-4" style="font-size: 18px;">
-					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'home' %}">Home</span></a>
+					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'home' %}">Home</a>
 					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'jobBoard' %}">Job/Internship Board</a>
-					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="#">Notifications</a>
+					<!-- <a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="#">Notifications</a> -->
 					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="#">Profile</a>
 					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'inbox' %}">Messages</a>
-					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'chatroom_list' %}">Chatrooms</a>
+					<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'chatroom_list' %}">Discussions</a>
+			
+					{% if user.is_authenticated %}
+						<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'logout' %}">Logout</a>
+					{% else %}
+						<a class="nav-item nav-link btn btn-primary d-inline-block text-dark mx-2" href="{% url 'loginPage' %}">Login</a>
+					{% endif %}
 				</div>
 			</div>
+			
 		</div>
 	</nav>
 {% endblock %}

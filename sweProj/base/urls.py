@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,5 +14,6 @@ urlpatterns = [
     path('send/', views.send_message, name='send_message'),
     path('chatrooms/', views.chatroom_list, name='chatroom_list'),
     path('chatrooms/<int:chatroom_id>/', views.chatroom_detail, name='chatroom_detail'),
-    path('chatrooms/new/', views.create_chatroom, name='create_chatroom')
+    path('chatrooms/new/', views.create_chatroom, name='create_chatroom'),
+    path('logout/', views.logoutUser, name='logout')
 ]
