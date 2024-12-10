@@ -74,5 +74,3 @@ class PostTest(TestCase):
     def test_post_str_method(self):
         # Test the __str__ method of the Post model
         self.assertEqual(str(self.post), "Test Heading")
-
-    

@@ -14,7 +14,23 @@ def home(request):
     
     # context = {'users'}
     jobs = Job.objects.all()[:15] # 15 most recent jobs 
-    posts = Post.objects.all() 
+    posts = [
+    {
+        "heading": "Exciting Internship Opportunity!",
+        "author": "Anitta Job",
+        "content": "Hey everyone, I just got a job at Google! Thanks to Connect-A-Niner for helping me find the right connections."
+    },
+    {
+        "heading": "Alumni Mentorship Session",
+        "author": "Larry Potter",
+        "content": "I’m hosting a mentorship session this Friday to help students navigate the tech industry. Looking forward to connecting with all of you!"
+    },
+    {
+        "heading": "New Internship Listing",
+        "author": "Alex Johnson",
+        "content": "Hey everyone, I found a great internship opportunity at Amazon for software engineering. If you’re interested, apply soon!"
+    },
+] 
 
     context = {'jobs': jobs, 'posts':posts}
     return render(request, 'base/home.html', context)
@@ -44,9 +60,11 @@ def loginPage(request):
     context = {'page': page}
     return render(request, 'base/login&register.html', context)
 
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
 
 def registerPage(request):
     # page = 'register'   # i am going to have jinga if else logic... so if the curr page == signup i will render the signup html
