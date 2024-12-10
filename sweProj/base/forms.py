@@ -2,32 +2,24 @@ from django.forms import ModelForm
 from .models import User, Job, Message, ChatRoom, ChatRoomMessage
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-
+from django.forms import inlineformset_factory
+from .models import UserProfile, Experience
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'name')  # Specify the fields you want to include
+        fields = ('email', 'name')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.pop('username', None)  # This ensures 'username' is not expected anywhere
-
-
-# class UserForm(ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'bio']
+        self.fields.pop('username', None)
 
 class jobCreationForm(ModelForm):
-    new_company_name = forms.CharField(
-        max_length=200, required=False, label="New Company Name"
-    )  # Custom field for the new company name
+    new_company_name = forms.CharField(max_length=200, required=False, label="New Company Name")
 
     class Meta:
         model = Job
-        fields = ['company', 'new_company_name', 'title', 'description', 'location','jobLink']
-
+        fields = ['company', 'new_company_name', 'title', 'description', 'location', 'jobLink']
 
 class MessageForm(forms.ModelForm):
     class Meta:
@@ -39,7 +31,6 @@ class MessageForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'placeholder': 'Write your message...'}),
         }
 
-
 class ChatRoomForm(forms.ModelForm):
     class Meta:
         model = ChatRoom
@@ -50,11 +41,17 @@ class ChatRoomMessageForm(forms.ModelForm):
         model = ChatRoomMessage
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(
-                attrs={
-                    'rows': 1,  # Restrict to a single line
-                    'style': 'resize: none; overflow: hidden;',  # Prevent resizing and scrolling
-                    'placeholder': 'Type your message here...',
-                }
-            ),
+            'content': forms.Textarea(attrs={'rows': 1, 'style': 'resize: none; overflow: hidden;', 'placeholder': 'Type your message here...'}),
         }
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['name', 'bio']
+
+class ExperienceForm(forms.ModelForm):
+    class Meta:
+        model = Experience
+        fields = ['title', 'description']
+
+ExperienceFormSet = inlineformset_factory(UserProfile, Experience, form=ExperienceForm, extra=1, can_delete=True)

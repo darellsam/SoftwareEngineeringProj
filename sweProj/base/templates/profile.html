@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile-container p-4 shadow rounded bg-white">
+        <h1 class="text-center text-success mb-4">My Profile</h1>
+
+        <!-- Button to toggle editability -->
+        <form method="POST">
+            {% csrf_token %}
+            {% if form_editable %}
+                <button type="submit" name="toggle_edit" value="false" class="btn btn-danger d-block mx-auto mb-4">Lock Profile</button>
+            {% else %}
+                <button type="submit" name="toggle_edit" value="true" class="btn btn-success d-block mx-auto mb-4">Edit Profile</button>
+            {% endif %}
+        </form>
+
+        <!-- Form for profile details -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ form.name.value }}" {% if not form_editable %}disabled{% endif %} required>
+            </div>
+            <div class="mb-3">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea id="bio" name="bio" class="form-control" rows="4" {% if not form_editable %}disabled{% endif %} required>{{ form.bio.value }}</textarea>
+            </div>
+
+            <h2 class="mt-4">Experience</h2>
+            {{ experience_formset.management_form }}
+            {% for form in experience_formset %}
+                <div class="mb-3">
+                    <label for="{{ form.instance.job_title }}" class="form-label">Job Title</label>
+                    {{ form.job_title }}
+                    <label for="{{ form.instance.company }}" class="form-label">Company</label>
+                    {{ form.company }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

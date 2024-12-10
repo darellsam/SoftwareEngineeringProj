@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
+from django.contrib.auth.models import User
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):  # we pass the email field in to create the user 
@@ -157,3 +158,18 @@ class ChatRoomMessage(models.Model):
     def __str__(self):
         return f"{self.sender.username} in {self.chatroom.name}"
     
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    bio = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Experience(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='experiences')
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
