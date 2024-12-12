@@ -52,6 +52,9 @@
               {% endfor %}
               
               <div class="text-center mt-3">
+                <p class="text-center fs-6 p-2 text-muted">
+                  Password must be at least 8 characters long, contain at least one number, and include one special character.
+                </p>
                 <button class="btn btn-primary">Sign Up</button>
                 <a href="{% url 'loginPage' %}" class="nav-link">Already Have An Account?</a>
               </div>
