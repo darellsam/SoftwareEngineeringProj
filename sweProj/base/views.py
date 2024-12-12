@@ -209,7 +209,7 @@ def send_message(request):
 
 @login_required
 def chatroom_list(request):
-    chatrooms = ChatRoom.objects.all()
+    chatrooms = ChatRoom.objects.order_by('-created_at')
     return render(request, 'discussion/chatroom_list.html', {'chatrooms': chatrooms})
 
 @login_required
