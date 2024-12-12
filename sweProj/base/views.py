@@ -6,8 +6,8 @@ from django.contrib import messages
 from .models import User, Post, Job, Company, PinnedJob, AppliedJob, Message, ChatRoom, ChatRoomMessage
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import UserProfile, Experience
-from .forms import UserProfileForm, ExperienceFormSet
+from .models import UserProfile, Experience, Skill
+from .forms import UserProfileForm, ExperienceFormSet, SkillFormSet
 
 def home(request):
     jobs = Job.objects.all()[:15]  # 15 most recent jobs
@@ -187,7 +187,7 @@ def profile_view(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
     form_editable = request.session.get('form_editable', True)  # Default to editable
-    
+
     # Handle form toggle
     if request.method == 'POST':
         if 'toggle_edit' in request.POST:
@@ -198,26 +198,32 @@ def profile_view(request):
         if form_editable:
             profile_form = UserProfileForm(request.POST, instance=user_profile)
             experience_formset = ExperienceFormSet(request.POST, instance=user_profile)
+            skills_formset = SkillFormSet(request.POST, instance=user_profile)
 
-            if profile_form.is_valid() and experience_formset.is_valid():
+            if profile_form.is_valid() and experience_formset.is_valid() and skills_formset.is_valid():
                 profile_form.save()
                 experience_formset.save()
+                skills_formset.save()
                 return redirect('profile')
         else:
             # If not editable, don't process the forms
             profile_form = UserProfileForm(instance=user_profile)
             experience_formset = ExperienceFormSet(instance=user_profile)
+            skills_formset = SkillFormSet(instance=user_profile)
 
     else:
         profile_form = UserProfileForm(instance=user_profile)
         experience_formset = ExperienceFormSet(instance=user_profile)
+        skills_formset = SkillFormSet(instance=user_profile)
 
     context = {
         'form': profile_form,
         'experience_formset': experience_formset,
+        'skills_formset': skills_formset,
         'form_editable': form_editable,
     }
     return render(request, 'profile.html', context)
+
 
 # Add logoutUser view
 def logoutUser(request):

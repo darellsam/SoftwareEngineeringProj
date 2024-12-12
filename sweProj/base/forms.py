@@ -3,7 +3,7 @@ from .models import User, Job, Message, ChatRoom, ChatRoomMessage
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import inlineformset_factory
-from .models import UserProfile, Experience
+from .models import UserProfile, Experience, Skill
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
@@ -54,4 +54,11 @@ class ExperienceForm(forms.ModelForm):
         model = Experience
         fields = ['title', 'description']
 
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = ['name']
+
+# Inline formsets for dynamic Experience and Skill forms
 ExperienceFormSet = inlineformset_factory(UserProfile, Experience, form=ExperienceForm, extra=1, can_delete=True)
+SkillFormSet = inlineformset_factory(UserProfile, Skill, form=SkillForm, extra=1, can_delete=True)
