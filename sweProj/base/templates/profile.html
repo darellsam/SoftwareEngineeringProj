@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile-container p-4 shadow rounded bg-white">
+        <h1 class="text-center text-success mb-4">My Profile</h1>
+
+        <!-- Button to toggle editability -->
+        <form method="POST">
+            {% csrf_token %}
+            {% if form_editable %}
+                <button type="submit" name="toggle_edit" value="false" class="btn btn-danger d-block mx-auto mb-4">Lock Profile</button>
+            {% else %}
+                <button type="submit" name="toggle_edit" value="true" class="btn btn-success d-block mx-auto mb-4">Edit Profile</button>
+            {% endif %}
+        </form>
+
+        <!-- Form for profile details -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ form.name.value }}" {% if not form_editable %}disabled{% endif %} required>
+            </div>
+            <div class="mb-3">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea id="bio" name="bio" class="form-control" rows="4" {% if not form_editable %}disabled{% endif %} required>{{ form.bio.value }}</textarea>
+            </div>
+
+            <h2 class="mt-4">Experience</h2>
+            <div id="experience-formset">
+                <div style="display:none;">
+                    {{ experience_formset.management_form }}
+                </div>
+                {% for form in experience_formset %}
+                    <div class="mb-3">
+                        <label for="{{ form.instance.title.id_for_label }}" class="form-label">Title</label>
+                        <input type="text" name="{{ form.title.name }}" value="{{ form.title.value }}" {% if not form_editable %}disabled{% endif %} class="form-control" id="{{ form.instance.title.id_for_label }}">
+
+                        <label for="{{ form.instance.description.id_for_label }}" class="form-label">Description</label>
+                        <textarea name="{{ form.description.name }}" {% if not form_editable %}disabled{% endif %} class="form-control" rows="3" id="{{ form.instance.description.id_for_label }}">{{ form.description.value }}</textarea>
+                    </div>
+                {% endfor %}
+                
+                <!-- Add empty form for adding new experience -->
+                {% if form_editable %}
+                    <div class="empty-form" style="display:none;">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" name="experience-{{ experience_formset.total_form_count }}-title" class="form-control">
+                            <label class="form-label">Description</label>
+                            <textarea name="experience-{{ experience_formset.total_form_count }}-description" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" id="add-experience" class="btn btn-link">Add Another Experience</button>
+
+            <h2 class="mt-4">Skills</h2>
+            <div id="skills-formset">
+                <div style="display:none;">
+                    {{ skills_formset.management_form }}
+                </div>
+                {% for form in skills_formset %}
+                    <div class="mb-3">
+                        <label for="{{ form.instance.name.id_for_label }}" class="form-label">Skill Name</label>
+                        <input type="text" name="{{ form.name.name }}" value="{{ form.name.value }}" {% if not form_editable %}disabled{% endif %} class="form-control" id="{{ form.instance.name.id_for_label }}">
+                    </div>
+                {% endfor %}
+                
+                <!-- Add empty form for adding new skills -->
+                {% if form_editable %}
+                    <div class="empty-form" style="display:none;">
+                        <div class="mb-3">
+                            <label class="form-label">Skill Name</label>
+                            <input type="text" name="skills-{{ skills_formset.total_form_count }}-name" class="form-control">
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <button type="button" id="add-skill" class="btn btn-link">Add Another Skill</button>
+
+            <button type="submit" class="btn btn-primary" {% if not form_editable %}disabled{% endif %}>Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("add-experience").addEventListener("click", function() {
+        const experienceContainer = document.querySelector("#experience-formset");
+        const newForm = experienceContainer.querySelector(".empty-form").cloneNode(true);
+        newForm.classList.remove("empty-form");
+        newForm.style.display = 'block';
+        experienceContainer.appendChild(newForm);
+    });
+
+    document.getElementById("add-skill").addEventListener("click", function() {
+        const skillContainer = document.querySelector("#skills-formset");
+        const newForm = skillContainer.querySelector(".empty-form").cloneNode(true);
+        newForm.classList.remove("empty-form");
+        newForm.style.display = 'block';
+        skillContainer.appendChild(newForm);
+    });
+</script>
+
+{% endblock %}
