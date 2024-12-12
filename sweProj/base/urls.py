@@ -15,5 +15,6 @@ urlpatterns = [
     path('chatrooms/', views.chatroom_list, name='chatroom_list'),
     path('chatrooms/<int:chatroom_id>/', views.chatroom_detail, name='chatroom_detail'),
     path('chatrooms/new/', views.create_chatroom, name='create_chatroom'),
-    path('logout/', views.logoutUser, name='logout')
+    path('logout/', views.logoutUser, name='logout'),  # Updated to use the logoutUser view
+    path('profile/', views.profile_view, name='profile'),
 ]
